@@ -1,10 +1,10 @@
+import { getFields } from "@/lib/api/getFields";
+import { BtFieldCard } from "@/lib/components/BtFieldCard";
 import { BtGrid } from "@/lib/components/BtGrid";
 import { Field } from "@/lib/types/field";
-import { BtFieldCard } from "@/lib/components/BtFieldCard";
-import { btFetch } from "@/lib/utils/btFetch";
 
 export default async function Page() {
-  const fields: Field[] = await btFetch("/fields");
+  const fields = await getFields();
 
   return (
     <main>
