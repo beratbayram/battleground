@@ -1,6 +1,21 @@
 import { Field } from "@/lib/types/field";
+import { NextResponse } from "next/server";
 
 const FIELDS: Field[] = [
+  {
+    id: 0,
+    name: "İlk Görev",
+    type: "Gözetleme",
+    startTime: "2025-03-29T08:00:00Z",
+    endTime: "2025-03-29T16:00:00Z",
+    coordinates: [
+      [30.5, 40.5],
+      [30.6, 40.5],
+      [30.6, 40.6],
+      [30.5, 40.6],
+      [30.5, 40.5],
+    ],
+  },
   {
     id: 1,
     name: "Doğu Görevi",
@@ -60,5 +75,5 @@ const FIELDS: Field[] = [
 ];
 
 export async function GET() {
-  return Response.json(FIELDS);
+  return NextResponse.json(FIELDS);
 }
