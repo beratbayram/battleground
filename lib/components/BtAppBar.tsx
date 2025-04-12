@@ -5,22 +5,22 @@ import RadarIcon from "@mui/icons-material/Radar";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { MouseEvent, useState } from "react";
+import { ComponentProps, Fragment, MouseEvent, useState } from "react";
 import { BtContainer } from "./BtContainer";
+import { BtLink } from "./BtLink";
+import { BtButton } from "./BtButton";
 
 interface Props {
   pages?: string[];
   settings?: string[];
 }
 
-const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 export function BtAppBar({}: Props) {
@@ -39,12 +39,24 @@ export function BtAppBar({}: Props) {
     setAnchorElNav(null);
   }
 
+  const pages = (color?: ComponentProps<typeof BtButton>["color"]) => [
+    <BtLink color={color} onClick={handleCloseNavMenu} href="/home/fields">
+      Alanlar
+    </BtLink>,
+    <BtLink color={color} onClick={handleCloseNavMenu} href="/home/units">
+      Birimler
+    </BtLink>,
+    <BtLink color={color} onClick={handleCloseNavMenu} href="/home/map">
+      Harita
+    </BtLink>,
+  ];
+
   function handleCloseUserMenu() {
     setAnchorElUser(null);
   }
 
   return (
-    <AppBar position="static" sx={{ marginBlockEnd: "1rem" }}>
+    <AppBar position="static" sx={{ marginBottom: 2 }} aria-hidden="false">
       <BtContainer>
         <Toolbar disableGutters>
           <RadarIcon sx={{ display: { xs: "none", sm: "flex" }, mr: 1 }} />
@@ -93,11 +105,11 @@ export function BtAppBar({}: Props) {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", sm: "none" } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))}
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                {pages().map((page, index) => (
+                  <Fragment key={index}>{page}</Fragment>
+                ))}
+              </Box>
             </Menu>
           </Box>
           <RadarIcon sx={{ display: { xs: "flex", sm: "none" }, mr: 1 }} />
@@ -119,15 +131,15 @@ export function BtAppBar({}: Props) {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", sm: "flex" },
+              color: "white",
+            }}
+          >
+            {pages("inherit").map((page, index) => (
+              <Fragment key={index}>{page}</Fragment>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
