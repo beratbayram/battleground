@@ -40,13 +40,23 @@ export function BtAppBar({}: Props) {
   }
 
   const pages = (color?: ComponentProps<typeof BtButton>["color"]) => [
-    <BtLink color={color} onClick={handleCloseNavMenu} href="/home/fields">
+    <BtLink
+      key={0}
+      color={color}
+      onClick={handleCloseNavMenu}
+      href="/home/fields"
+    >
       Alanlar
     </BtLink>,
-    <BtLink color={color} onClick={handleCloseNavMenu} href="/home/units">
+    <BtLink
+      key={1}
+      color={color}
+      onClick={handleCloseNavMenu}
+      href="/home/units"
+    >
       Birimler
     </BtLink>,
-    <BtLink color={color} onClick={handleCloseNavMenu} href="/home/map">
+    <BtLink key={2} color={color} onClick={handleCloseNavMenu} href="/home/map">
       Harita
     </BtLink>,
   ];
