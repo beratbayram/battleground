@@ -66,9 +66,9 @@ export function BtAppBar({}: Props) {
   }
 
   return (
-    <AppBar position="static" sx={{ marginBottom: 2 }} aria-hidden="false">
+    <AppBar position="static" aria-hidden="false">
       <BtContainer>
-        <Toolbar disableGutters>
+        <Toolbar variant="dense" disableGutters>
           <RadarIcon sx={{ display: { xs: "none", sm: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -156,7 +156,7 @@ export function BtAppBar({}: Props) {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {/* TODO: Add avatar image */}
-                <Avatar alt="Remy Sharp" src="" />{" "}
+                <Avatar alt="User" src="" />{" "}
               </IconButton>
             </Tooltip>
             <Menu

@@ -14,7 +14,7 @@ export function BtNewCard({ text, href }: Props) {
   return (
     <BtLink key={1} href={href} color="inherit" className={classes.card}>
       <AddIcon className={classes.icon} />
-      <Typography className={classes.text}>{text}</Typography>
+      <Typography variant="button" className={classes.text}>{text}</Typography>
     </BtLink>
   );
 }

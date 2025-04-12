@@ -1,7 +1,16 @@
+export const FIELD_TYPES = [
+  "Gözetleme",
+  "İzleme",
+  "Saldırı",
+  "Savunma",
+  "Keşif",
+  "Eğitim",
+] as const;
+
 export interface Field {
   id: number;
   name: string;
-  type: string;
+  type: typeof FIELD_TYPES[number];
   startTime: string;
   endTime: string;
   coordinates: number[][];

@@ -12,6 +12,10 @@ $color: rgba(0, 0, 0, 0.75);
   color: $color !important;
 }
 
-.icon{
+.icon {
   font-size: 100px !important;
+}
+
+.text {
+  text-transform: none !important;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 import "./reset.scss";
+import CssBaseline from '@mui/material/CssBaseline';
 import { ReactNode } from "react";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -17,7 +18,8 @@ interface Props {
 }
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en">
+    <html lang="tr">
+      <CssBaseline />
       <body>{children}</body>
     </html>
   );
