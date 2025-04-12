@@ -1,6 +1,7 @@
 import { getFields } from "@/lib/api/getFields";
 import { BtFieldCard } from "@/lib/components/BtFieldCard";
 import { BtGrid } from "@/lib/components/BtGrid";
+import { BtNewCard } from "@/lib/components/BtNewCard";
 import { Field } from "@/lib/types/field";
 
 export default async function Page() {
@@ -14,6 +15,9 @@ export default async function Page() {
             <BtFieldCard field={field} />
           </BtGrid>
         ))}
+        <BtGrid>
+          <BtNewCard text="Yeni Alan Ekle" href="/home/fields/new" />
+        </BtGrid>
       </BtGrid>
     </main>
   );

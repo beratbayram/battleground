@@ -1,0 +1,17 @@
+$color: rgba(0, 0, 0, 0.75);
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed $color !important;
+  color: $color !important;
+}
+
+.icon{
+  font-size: 100px !important;
+}
