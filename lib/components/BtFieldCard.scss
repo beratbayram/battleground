@@ -1,0 +1,11 @@
+.BtFieldCardContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 90px);
+
+  .leaflet-control-zoom {
+    display: none;
+  }
+}

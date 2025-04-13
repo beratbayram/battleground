@@ -12,33 +12,43 @@ import Divider from "@mui/material/Divider";
 
 interface EventsProps {
   onClick?: (event: LeafletMouseEvent) => void;
+  positions?: [number, number][];
 }
 
-function Events({ onClick }: EventsProps) {
-  /* const map = */ useMapEvents({
+function Events({ onClick, positions }: EventsProps) {
+  const map = useMapEvents({
     click: onClick,
   });
 
+  if (positions && positions.length > 0) {
+    map.fitBounds(positions, {
+      padding: [50, 50],
+      animate: true,
+      duration: 0.5,
+    });
+  }
   return null;
 }
 
 interface BtMapFieldPickerProps {
-  positions: [number, number][];
-  setPositions: React.Dispatch<React.SetStateAction<[number, number][]>>;
+  positions?: [number, number][];
+  setPositions?: React.Dispatch<React.SetStateAction<[number, number][]>>;
+  focusOnSelections?: boolean;
 }
 
 export function BtMapFieldPicker({
-  positions,
+  positions = [],
   setPositions,
+  focusOnSelections = false,
 }: BtMapFieldPickerProps) {
   function handleMapClick(event: LeafletMouseEvent) {
     const { lat, lng } = event.latlng;
     const newPosition: [number, number] = [lat, lng];
-    setPositions((currPositions) => [...currPositions, newPosition]);
+    setPositions?.((currPositions) => [...currPositions, newPosition]);
   }
 
   function handleMarkerChange(index: number, newPosition: [number, number]) {
-    setPositions((currPositions) =>
+    setPositions?.((currPositions) =>
       currPositions.map((pos, i) => (i === index ? newPosition : pos))
     );
   }
@@ -66,7 +76,7 @@ export function BtMapFieldPicker({
                 title="sil"
                 onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
-                  setPositions((currPositions) =>
+                  setPositions?.((currPositions) =>
                     currPositions.filter((_, i) => i !== index)
                   );
                 }}
@@ -79,24 +89,40 @@ export function BtMapFieldPicker({
               <tbody>
                 <tr>
                   <td>
-                    <Typography style={{margin: 0}} variant="body2" color="text.secondary">
+                    <Typography
+                      style={{ margin: 0 }}
+                      variant="body2"
+                      color="text.secondary"
+                    >
                       Enlem
                     </Typography>
                   </td>
                   <td>
-                    <Typography style={{margin: 0}} variant="body2" color="text.secondary">
+                    <Typography
+                      style={{ margin: 0 }}
+                      variant="body2"
+                      color="text.secondary"
+                    >
                       {position[0].toFixed(6)}
                     </Typography>
                   </td>
                 </tr>
                 <tr>
                   <td>
-                    <Typography style={{margin: 0}} variant="body2" color="text.secondary">
+                    <Typography
+                      style={{ margin: 0 }}
+                      variant="body2"
+                      color="text.secondary"
+                    >
                       Boylam
                     </Typography>
                   </td>
                   <td>
-                    <Typography style={{margin: 0}} variant="body2" color="text.secondary">
+                    <Typography
+                      style={{ margin: 0 }}
+                      variant="body2"
+                      color="text.secondary"
+                    >
                       {position[1].toFixed(6)}
                     </Typography>
                   </td>
@@ -108,7 +134,10 @@ export function BtMapFieldPicker({
       ))}
       <Polygon positions={positions} />
 
-      <Events onClick={handleMapClick} />
+      <Events
+        onClick={handleMapClick}
+        positions={focusOnSelections ? positions : []}
+      />
     </BtMap>
   );
 }
