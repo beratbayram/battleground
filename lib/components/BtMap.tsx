@@ -7,7 +7,6 @@ import "leaflet/dist/leaflet.css";
 import { ComponentProps } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 
-
 function BtTileLayer() {
   return (
     <TileLayer
@@ -20,7 +19,7 @@ function BtTileLayer() {
 export function BtMap(props: ComponentProps<typeof MapContainer>) {
   return (
     <MapContainer
-      center={[51.505, -0.09]}
+      center={[39.924976, 32.836901]}
       zoom={13}
       scrollWheelZoom={false}
       style={{ height: "100%", width: "100%" }}
