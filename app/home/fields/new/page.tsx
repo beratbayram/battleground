@@ -3,14 +3,18 @@ import { BtAutoComplete } from "@/lib/components/BtAutoComplete";
 import { BtButton } from "@/lib/components/BtButton";
 import { BtDateRange } from "@/lib/components/BtDateRange";
 import { BtTextField } from "@/lib/components/BtTextField";
-import { Field, FIELD_TYPES } from "@/lib/types/field";
-import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import classes from "./page.module.scss";
 import { BtPositionsTable } from "@/lib/components/BtPositionsTable";
+import { Field } from "@/generated/prisma";
+import { FIELD_TYPES } from "@/lib/consts/FIELD_TYPES";
+import { addField } from "@/lib/api/addField";
+import CircularProgress from "@mui/material/CircularProgress";
+import Backdrop from "@mui/material/Backdrop";
+import { useRouter } from "next/navigation";
 
 const BtMapFieldPicker = dynamic(
   () =>
@@ -29,6 +33,9 @@ export default function Page() {
   const [startDate, setStartDate] = useState<Field["startTime"] | undefined>();
   const [endDate, setEndDate] = useState<Field["endTime"] | undefined>();
   const [positions, setPositions] = useState<[number, number][]>([]);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+
 
   function handleDateChange(newValue: {
     startDate: Field["startTime"];
@@ -38,26 +45,40 @@ export default function Page() {
     setEndDate(newValue.endDate);
   }
 
-  function handleSubmit() {
-    if (!name || !type || !startDate || !endDate) {
+  async function handleSubmit() {
+    if (!name || !type || !startDate || !endDate || positions.length === 0) {
       alert("Lütfen tüm alanları doldurun.");
       return;
     }
 
-    const field: Field = {
-      id: 0,
+    setLoading(true);
+    const field: Omit<Field, "id"> = {
       name,
       type,
       startTime: startDate,
       endTime: endDate,
       coordinates: JSON.stringify(positions),
     };
-    console.log("Field created:", field);
+    try {
+      await addField(field);
+      router.push("/home/fields");
+
+    } catch (error) {
+      console.error("Error adding field:", error);
+      alert("Alan eklenirken bir hata oluştu. Lütfen tekrar deneyin.");
+    }
+    setLoading(false);
   }
 
   return (
     <main>
-      <Box sx={{ display: "flex" }} >
+      <Backdrop
+        sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <Box sx={{ display: "flex" }}>
         <Box
           maxWidth={400}
           padding={2}
