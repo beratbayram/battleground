@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import classes from "./page.module.scss";
 import { getUnitHistory } from "@/lib/api/getUnitHistory";
+import { addUnitHistory } from "@/lib/api/addUnitHistory";
 
 const BtMainMap = dynamic(
   () => import("@/lib/components/BtMainMap").then((mod) => mod.BtMainMap),
@@ -48,29 +49,20 @@ export default function Page() {
 
   useEffect(() => {
     gatherData(setFields, setUnits, setUnitHistory);
-    return () => {
-      setFields(null);
-      setUnits(null);
-      setUnitHistory([]);
-    };
   }, []);
 
   useEffect(() => {
     if (!fields || !units) return;
 
-    return;
-
     const ws = new WebSocket("ws://localhost:8080");
 
-    ws.addEventListener("open", () => {
-      console.log("WebSocket connection opened");
-    });
-    ws.addEventListener("message", (event) => {
-      const data = event.data;
-      console.log("WebSocket message received:", data);
-    });
-    ws.addEventListener("close", () => {
-      console.log("WebSocket connection closed");
+    ws.addEventListener("message", async (event) => {
+      const data = JSON.parse(event.data);
+      const { timestamp, lat, lng, id } = data;
+
+      await addUnitHistory({ timestamp, lat, lng, unitId: id });
+      gatherData(setFields, setUnits, setUnitHistory);
+
     });
     ws.addEventListener("error", (error) => {
       console.error("WebSocket error:", error);
