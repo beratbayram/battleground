@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/**
+ * export interface Field {
+ * id: number;
+ * name: string;
+ * type: typeof FIELD_TYPES[number];
+ * startTime: string;
+ * endTime: string;
+ * coordinates: number[][];
+ * }
+ */
+
+model Field {
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        FIELD_TYPE
+  startTime   String
+  endTime     String
+  coordinates String
+}
+
+/**
+ * export interface Unit {
+ * "id": 1,
+ * "name": "Tank-2",
+ * "speed": "10.0",
+ * "course": "180.0"
+ * }
+ */
+
+model Unit {
+  id      Int    @id @default(autoincrement())
+  name    String
+  speed   String
+  course  String
+  fieldId Int?
+}
+
+enum FIELD_TYPE {
+  Gözetleme
+  İzleme
+  Saldırı
+  Savunma
+  Keşif
+  Eğitim
+}

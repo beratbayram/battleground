@@ -13,7 +13,7 @@ export interface Field {
   type: typeof FIELD_TYPES[number];
   startTime: string;
   endTime: string;
-  coordinates: number[][];
+  coordinates: string ;
 }
 
 /*

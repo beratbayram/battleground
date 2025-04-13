@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "p:studio": "prisma studio",
+    "p:generate": "prisma generate",
+    "p:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -15,6 +18,7 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@mui/x-date-pickers": "^7.28.3",
+    "@prisma/client": "6.6.0",
     "dayjs": "^1.11.13",
     "leaflet": "^1.9.4",
     "leaflet-defaulticon-compatibility": "^0.1.2",
@@ -33,12 +37,16 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "prisma": "^6.6.0",
     "sass": "^1.86.3",
     "typescript": "^5"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "@parcel/watcher",
+      "@prisma/engines",
+      "esbuild",
+      "prisma",
       "sharp"
     ]
   }

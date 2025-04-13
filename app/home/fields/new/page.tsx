@@ -50,7 +50,7 @@ export default function Page() {
       type,
       startTime: startDate,
       endTime: endDate,
-      coordinates: positions,
+      coordinates: JSON.stringify(positions),
     };
     console.log("Field created:", field);
   }
