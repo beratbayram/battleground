@@ -1,14 +1,23 @@
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 import { Marker as LeafletMarker } from "leaflet";
-import { ReactNode, useMemo, useRef } from "react";
-import { Marker } from "react-leaflet";
+import { useMemo, useRef } from "react";
+import { Marker, Popup } from "react-leaflet";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface Props extends React.ComponentProps<typeof Marker> {
   position: [number, number];
+  setPositions?: React.Dispatch<React.SetStateAction<[number, number][]>>;
   onChange?: (position: [number, number]) => void;
-  children?: ReactNode;
+  index: number;
 }
 
-export function BtMarker({ position, onChange, children }: Props) {
+export function BtMarker({
+  position,
+  setPositions,
+  onChange,
+  index,
+  ...props
+}: Props) {
   const markerRef = useRef<LeafletMarker>(null);
   const eventHandlers = useMemo(
     () => ({
@@ -29,8 +38,77 @@ export function BtMarker({ position, onChange, children }: Props) {
       eventHandlers={eventHandlers}
       position={position}
       ref={markerRef}
+      {...props}
     >
-      {children}
+      <Popup>
+        <Box
+          minWidth="150px"
+          display="flex"
+          alignItems="center"
+          justifyContent={"space-between"}
+        >
+          <Typography variant="body2" color="text.secondary" noWrap>
+            Konum {index + 1}
+          </Typography>
+          <IconButton
+            size="small"
+            title="sil"
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+              setPositions?.((currPositions) =>
+                currPositions.filter((_, i) => i !== index)
+              );
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+        <Divider />
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <Typography
+                  style={{ margin: 0 }}
+                  variant="body2"
+                  color="text.secondary"
+                >
+                  Enlem
+                </Typography>
+              </td>
+              <td>
+                <Typography
+                  style={{ margin: 0 }}
+                  variant="body2"
+                  color="text.secondary"
+                >
+                  {position[0].toFixed(6)}
+                </Typography>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <Typography
+                  style={{ margin: 0 }}
+                  variant="body2"
+                  color="text.secondary"
+                >
+                  Boylam
+                </Typography>
+              </td>
+              <td>
+                <Typography
+                  style={{ margin: 0 }}
+                  variant="body2"
+                  color="text.secondary"
+                >
+                  {position[1].toFixed(6)}
+                </Typography>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Popup>
     </Marker>
   );
 }

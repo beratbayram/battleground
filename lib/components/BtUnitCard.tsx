@@ -42,7 +42,7 @@ export async function BtUnitCard({ unit }: Props) {
           <BtCardMap positions={positions} focusOnSelections withPolyline />
         ) : (
           <div className="BtCardContainerEmpty">
-            <p>Henüz bir konum kaydedilmedi.</p>
+            <p>Konum kaydı bulunamadı</p>
           </div>
         )}
       </div>

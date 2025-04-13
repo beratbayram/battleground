@@ -1,3 +1,4 @@
+"use server"
 import { Field } from "@/generated/prisma";
 import { btPrisma } from "@/prisma/btPrisma";
 
