@@ -1,6 +1,7 @@
 import { Unit } from "@/generated/prisma";
 import { getUnits } from "@/lib/api/getUnits";
 import { BtGrid } from "@/lib/components/BtGrid";
+import { BtLink } from "@/lib/components/BtLink";
 import { BtUnitCard } from "@/lib/components/BtUnitCard";
 
 export default async function Page() {
@@ -11,12 +12,15 @@ export default async function Page() {
       <BtGrid container>
         {units.map((unit: Unit) => (
           <BtGrid key={unit.id}>
-            <BtUnitCard unit={unit} />
+            <BtLink
+              sx={{ display: "contents", textTransform: "none" }}
+              href={`/home/map?focusOnUnit=${unit.id}`}
+            >
+              <BtUnitCard unit={unit} />
+            </BtLink>
           </BtGrid>
         ))}
       </BtGrid>
     </main>
   );
 }
-
-

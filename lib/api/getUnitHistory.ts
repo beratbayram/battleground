@@ -1,3 +1,6 @@
+"use server";
+
+import "server-only";
 import { UnitHistory } from "@/generated/prisma";
 import { btPrisma } from "@/prisma/btPrisma";
 import dayjs from "dayjs";

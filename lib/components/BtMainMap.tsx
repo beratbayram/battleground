@@ -1,60 +1,79 @@
 "use client";
 
-import { Field } from "@/generated/prisma";
+import { Field, Unit, UnitHistory } from "@/generated/prisma";
 import { Typography } from "@mui/material";
 import { LeafletMouseEvent } from "leaflet";
-import { Polygon, Popup, useMapEvents } from "react-leaflet";
+import { Fragment } from "react";
+import { Polygon, Polyline, Popup, useMap } from "react-leaflet";
 import { BtMap } from "./BtMap";
+import { BtMarker } from "./BtMarker";
 
-interface EventsProps {
+interface FieldEventsProps {
   onClick?: (event: LeafletMouseEvent) => void;
-  positions?: [number, number][][];
-  focusIndex?: number;
+  fieldPositions?: [number, number][][];
+  focusField?: number;
 }
 
-function noop() {}
+function filterUnitHistoryBy(id: number, unitHistory: UnitHistory[]) {
+  return unitHistory
+    .filter((history) => history.unitId === id)
+    .map((history) => [history.lat, history.lng] as [number, number]);
+}
 
-function Events({ onClick, positions, focusIndex }: EventsProps) {
-  const map = useMapEvents({
-    click: onClick ?? noop,
-  });
+function FieldEvents({ fieldPositions, focusField }: FieldEventsProps) {
+  const map = useMap();
 
-  if (focusIndex !== undefined && focusIndex !== -1) {
-    const focusPosition = positions?.[focusIndex];
+  if (focusField !== undefined && focusField !== -1) {
+    const focusPosition = fieldPositions?.[focusField];
 
     if (focusPosition) {
       map.fitBounds(focusPosition, {
         padding: [50, 50],
-        animate: true,
-        duration: 0.5,
       });
     }
   }
   return null;
 }
 
+interface UnitEventsProps {
+  unitPositions: [number, number][];
+}
+
+function UnitEvents({ unitPositions }: UnitEventsProps) {
+  const map = useMap();
+
+  if (unitPositions.length > 0) {
+    map.fitBounds(unitPositions, {
+      padding: [50, 50],
+    });
+  }
+
+  return null;
+}
+
 interface BtMapFieldPickerProps {
   fields?: Field[];
-  focusIndex?: number;
+  focusField?: number;
+  units?: Unit[];
+  focusUnit?: number;
+  unitHistory?: UnitHistory[];
 }
 
 export function BtMainMap({
   fields = [],
-  focusIndex = -1,
+  focusField = -1,
+  units = [],
+  focusUnit = -1,
+  unitHistory = [],
 }: BtMapFieldPickerProps) {
-
-  const positions: [number, number][][] = fields.map((field) =>
+  const fieldPositions: [number, number][][] = fields.map((field) =>
     JSON.parse(field.coordinates)
   );
 
   return (
     <BtMap>
-
-      {positions.map((position, index) => (
-        <Polygon
-          key={index}
-          positions={position}
-        >
+      {fieldPositions.map((position, index) => (
+        <Polygon key={index} positions={position}>
           <Popup>
             <Typography variant="body2" color="text.secondary">
               {fields[index].name}
@@ -63,7 +82,26 @@ export function BtMainMap({
         </Polygon>
       ))}
 
-      <Events positions={positions} focusIndex={focusIndex} />
+      {units.map((unit) => {
+        const unitPositions = filterUnitHistoryBy(unit.id, unitHistory);
+
+        return (
+          <Fragment key={unit.id}>
+            {unitPositions.map((position, index) => (
+              <BtMarker
+                name={unit.name}
+                key={index}
+                index={index}
+                position={position}
+              />
+            ))}
+            <Polyline positions={unitPositions} />
+          </Fragment>
+        );
+      })}
+
+      <FieldEvents fieldPositions={fieldPositions} focusField={focusField} />
+      <UnitEvents unitPositions={filterUnitHistoryBy(focusUnit, unitHistory)} />
     </BtMap>
   );
 }

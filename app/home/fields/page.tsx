@@ -17,7 +17,7 @@ export default async function Page() {
           <BtGrid key={field.id}>
             <BtLink
               sx={{ display: "contents", textTransform: "none" }}
-              href={`/home/map?focus=${field.id}`}
+              href={`/home/map?focusOnField=${field.id}`}
             >
               <BtFieldCard field={field} />
             </BtLink>

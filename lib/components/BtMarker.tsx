@@ -9,6 +9,7 @@ interface Props extends React.ComponentProps<typeof Marker> {
   setPositions?: React.Dispatch<React.SetStateAction<[number, number][]>>;
   onChange?: (position: [number, number]) => void;
   index: number;
+  name?: string;
 }
 
 export function BtMarker({
@@ -16,6 +17,7 @@ export function BtMarker({
   setPositions,
   onChange,
   index,
+  name,
   ...props
 }: Props) {
   const markerRef = useRef<LeafletMarker>(null);
@@ -48,7 +50,7 @@ export function BtMarker({
           justifyContent={"space-between"}
         >
           <Typography variant="body2" color="text.secondary" noWrap>
-            Konum {index + 1}
+            {name ?? "Konum"} - {index + 1}
           </Typography>
           <IconButton
             size="small"

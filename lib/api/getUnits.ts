@@ -1,3 +1,5 @@
+"use server";
+
 import { Unit } from "@/generated/prisma";
 import { btPrisma } from "@/prisma/btPrisma";
 
