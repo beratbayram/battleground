@@ -6,7 +6,6 @@ const wss = new WebSocketServer({ port: 8080 });
 console.log("WebSocket server started on ws://localhost:8080");
 
 wss.on("connection", function connection(ws) {
-  console.log("client connected");
   ws.on("error", console.error);
 
   ws.on("message", function message(data) {
