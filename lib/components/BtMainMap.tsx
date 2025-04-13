@@ -2,54 +2,13 @@
 
 import { Field, Unit, UnitHistory } from "@/generated/prisma";
 import { Typography } from "@mui/material";
-import { LeafletMouseEvent } from "leaflet";
 import { Fragment } from "react";
-import { Polygon, Polyline, Popup, useMap } from "react-leaflet";
+import { Polygon, Polyline, Popup } from "react-leaflet";
+import { filterUnitHistoryBy } from "../utils/filterUnitHistoryBy";
+import { BtMainMapFieldEvents } from "./BtMainMapFieldEvents";
+import { BtMainMapUnitEvents } from "./BtMainMapUnitEvents";
 import { BtMap } from "./BtMap";
 import { BtMarker } from "./BtMarker";
-
-interface FieldEventsProps {
-  onClick?: (event: LeafletMouseEvent) => void;
-  fieldPositions?: [number, number][][];
-  focusField?: number;
-}
-
-function filterUnitHistoryBy(id: number, unitHistory: UnitHistory[]) {
-  return unitHistory
-    .filter((history) => history.unitId === id)
-    .map((history) => [history.lat, history.lng] as [number, number]);
-}
-
-function FieldEvents({ fieldPositions, focusField }: FieldEventsProps) {
-  const map = useMap();
-
-  if (focusField !== undefined && focusField !== -1) {
-    const focusPosition = fieldPositions?.[focusField];
-
-    if (focusPosition) {
-      map.fitBounds(focusPosition, {
-        padding: [50, 50],
-      });
-    }
-  }
-  return null;
-}
-
-interface UnitEventsProps {
-  unitPositions: [number, number][];
-}
-
-function UnitEvents({ unitPositions }: UnitEventsProps) {
-  const map = useMap();
-
-  if (unitPositions.length > 0) {
-    map.fitBounds(unitPositions, {
-      padding: [50, 50],
-    });
-  }
-
-  return null;
-}
 
 interface BtMapFieldPickerProps {
   fields?: Field[];
@@ -100,8 +59,13 @@ export function BtMainMap({
         );
       })}
 
-      <FieldEvents fieldPositions={fieldPositions} focusField={focusField} />
-      <UnitEvents unitPositions={filterUnitHistoryBy(focusUnit, unitHistory)} />
+      <BtMainMapFieldEvents
+        fieldPositions={fieldPositions}
+        focusField={focusField}
+      />
+      <BtMainMapUnitEvents
+        unitPositions={filterUnitHistoryBy(focusUnit, unitHistory)}
+      />
     </BtMap>
   );
 }
