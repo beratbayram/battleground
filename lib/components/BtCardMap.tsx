@@ -15,7 +15,7 @@ const BtMapFieldPicker = dynamic(
     loading: () => <CircularProgress />,
   }
 );
-export function BtFieldCardMap(props: ComponentProps<typeof BtMapFieldPicker>) {
+export function BtCardMap(props: ComponentProps<typeof BtMapFieldPicker>) {
   return (
     <Box
       sx={{

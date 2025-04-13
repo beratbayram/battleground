@@ -23,7 +23,7 @@ datasource db {
  */
 
 model Field {
-  id          Int      @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
   type        FIELD_TYPE
   startTime   String
@@ -46,6 +46,8 @@ model Unit {
   speed   String
   course  String
   fieldId Int?
+
+  UnitHistory UnitHistory[]
 }
 
 enum FIELD_TYPE {
@@ -55,4 +57,20 @@ enum FIELD_TYPE {
   Savunma
   Keşif
   Eğitim
+}
+
+/**
+ * [
+ * { "timestamp": "2025-03-28T08:00:00Z", "lat": 40.500, "lng": 30.500 },
+ * { "timestamp": "2025-03-28T08:01:00Z", "lat": 40.502, "lng": 30.504 },
+ * { "timestamp": "2025-03-28T08:02:00Z", "lat": 40.506, "lng": 30.510 }
+ * ]
+ */
+model UnitHistory {
+  id        Int    @id @default(autoincrement())
+  timestamp String
+  lat       Float
+  lng       Float
+  unitId    Int
+  unit      Unit   @relation(fields: [unitId], references: [id])
 }

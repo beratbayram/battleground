@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { LeafletMouseEvent } from "leaflet";
-import { Polygon, Popup, useMapEvents } from "react-leaflet";
+import { Polygon, Polyline, Popup, useMapEvents } from "react-leaflet";
 import { BtMap } from "./BtMap";
 import { BtMarker } from "./BtMarker";
 import Divider from "@mui/material/Divider";
@@ -33,12 +33,14 @@ function Events({ onClick, positions }: EventsProps) {
 interface BtMapFieldPickerProps {
   positions?: [number, number][];
   setPositions?: React.Dispatch<React.SetStateAction<[number, number][]>>;
+  withPolyline?: boolean;
   focusOnSelections?: boolean;
 }
 
 export function BtMapFieldPicker({
   positions = [],
   setPositions,
+  withPolyline = false,
   focusOnSelections = false,
 }: BtMapFieldPickerProps) {
   function handleMapClick(event: LeafletMouseEvent) {
@@ -132,7 +134,11 @@ export function BtMapFieldPicker({
           </Popup>
         </BtMarker>
       ))}
-      <Polygon positions={positions} />
+      {withPolyline ? (
+        <Polyline positions={positions} />
+      ) : (
+        <Polygon positions={positions} />
+      )}
 
       <Events
         onClick={handleMapClick}
